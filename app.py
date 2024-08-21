@@ -4,40 +4,90 @@ from scipy.stats import f_oneway
 import plotly.express as px
 
 def main():
-    uploaded_file = st.file_uploader(label = "Choose a CSV file",
-                                     accept_multiple_files = False)
     
-    if uploaded_file is None:
-        data = pd.read_csv("data_example.csv", sep=';')
-    else:
-        data = pd.read_csv(uploaded_file)
-    
-    st.write(data.head())
-    
-    var = st.selectbox(label = 'Quantitative variable',
-                       options = data.columns)
-    
-    fact = st.selectbox(label = 'Categorical factor',
-                        options = data.columns)
-
-    if var!=fact:
-        fig = px.box(data,
-                     x=fact,
-                     y=var,
-                     color=fact,
-                     title='Boxplot')
-
-        # Update layout (optional)
-        fig.update_layout(
-            yaxis_title='Categorical factor',
-            xaxis_title='Variable',
-            showlegend=False
+    with st.sidebar:
+        st.markdown("---")
+        st.title("Homogeneity testing")
+        st.markdown(
+            """
+            This application is using Anova test to check the homogeneity of data along multiple axes (x, y, z)
+            """,
+            unsafe_allow_html=True
         )
+        st.markdown("---")
+        
+        uploaded_file = st.file_uploader(label = "Choose a CSV file",
+                                        accept_multiple_files = False)
+    
+        if uploaded_file is None:
+            data = pd.read_csv("data_example.csv", sep=';')
+        else:
+            data = pd.read_csv(uploaded_file)
+    
+    
+        var_list = ['']+data.columns.tolist()
+        tested = st.selectbox(label = 'Quantitative variable to be tested',
+                              options = var_list)
+        
+        # Multiselect for choosing one or more variables
+        selected_vars = st.multiselect(
+            'Select variables to plot:',
+            options=data.columns.tolist()
+        )
+        
+        
+        
+        st.markdown("---")
+        st.markdown(
+            """
+            Connect with me:
 
-        # Display the boxplot in Streamlit
-        st.plotly_chart(fig,
-                        theme = "streamlit",
-                        use_container_width = True)
+            <a href="https://www.linkedin.com/in/jamel-belgacem-289606a7/" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" width="30" height="30" alt="LinkedIn"/>
+            </a>
+            
+            <a href="https://github.com/JamBelg" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" width="30" height="30" alt="GitHub"/>
+            </a>
+            """,
+            unsafe_allow_html=True,
+        )
+        st.markdown("---")
+        
+
+    if st.checkbox('Show raw data'):
+        if uploaded_file is None:
+            st.subheader('Raw data')
+            
+        else:
+            st.subheader('Uploaded data')
+        st.write(data.head(20))
+    
+
+    if tested!='' and len(selected_vars)>0:
+        st.markdown("<b>Vizualisation</b>", unsafe_allow_html=True)
+        for var in selected_vars:
+            fig = px.box(data,
+                        x=var,
+                        y=tested,
+                        color=var,
+                        title='Boxplot '+tested+' vs '+var)
+
+            # Update layout (optional)
+            fig.update_layout(
+                yaxis_title=tested,
+                xaxis_title=var,
+                showlegend=False
+            )
+
+            # Display the boxplot in Streamlit
+            st.plotly_chart(fig,
+                            theme = "streamlit",
+                            use_container_width = True)
+        st.markdown("---")
+        st.markdown("<b>Outliers</b>", unsafe_allow_html=True)
+        
+        
 
 if __name__ == "__main__":
     main()
