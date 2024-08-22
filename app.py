@@ -114,6 +114,10 @@ def main():
             anova_result = f_oneway(*groups)
             st.markdown("by "+var+":", unsafe_allow_html=True)
             st.write(anova_result)
+            if anova_result.pvalue>=0.05:
+                st.markdown("p-value ≥ 0.05: Fail to reject the null hypothesis. The groups are homogeneous.", unsafe_allow_html=True)
+            else:
+                st.markdown("p-value < 0.05: Reject the null hypothesis. The groups are not homogeneous.", unsafe_allow_html=True)
             
         
         st.markdown("<li>Levene test</li>", unsafe_allow_html=True)
@@ -124,15 +128,23 @@ def main():
             levene_result = levene(*groups)
             st.markdown("by "+var+":", unsafe_allow_html=True)
             st.write(levene_result)
+            if levene_result.pvalue>=0.05:
+                st.markdown("p-value ≥ 0.05: Fail to reject H₀, the groups are homogeneous in terms of variance.", unsafe_allow_html=True)
+            else:
+                st.markdown("p-value < 0.05: Reject H₀, the groups are not homogeneous in terms of variance.", unsafe_allow_html=True)
 
         st.markdown("<li>Bartlett test</li>", unsafe_allow_html=True)
         for var in selected_vars:
             data[var] = data[var].astype('category')
             # Perform Bartlett test
             groups = [data[tested][data[var] == level] for level in data[var].unique()]
-            levene_result = bartlett(*groups)
+            bartlett_result = bartlett(*groups)
             st.markdown("by "+var+":", unsafe_allow_html=True)
-            st.write(levene_result)
+            st.write(bartlett_result)
+            if bartlett_result.pvalue>=0.05:
+                st.markdown("p-value ≥ 0.05: Fail to reject H₀, the groups are homogeneous in terms of variance.", unsafe_allow_html=True)
+            else:
+                st.markdown("p-value < 0.05: Reject H₀, the groups are not homogeneous in terms of variance.", unsafe_allow_html=True)
         
         st.markdown("</ul>", unsafe_allow_html=True)
         
