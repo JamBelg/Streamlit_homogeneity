@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from scipy.stats import f_oneway
+from scipy.stats import f_oneway, levene, bartlett
 import plotly.express as px
 
 def main():
@@ -86,7 +86,55 @@ def main():
                             use_container_width = True)
         st.markdown("---")
         st.markdown("<b>Outliers</b>", unsafe_allow_html=True)
+        # Calculate the Z-scores
+        z_scores = (data[tested] - data[tested].mean()) / data[tested].std()
+ 
+        # Define a threshold for identifying outliers (e.g., Z-score threshold of 2)
+        threshold = 3
+ 
+        # Identify the outliers
+        outliers = data[abs(z_scores) > threshold]
+ 
+        # Print the outliers
+        st.markdown("<u>Z-score</u> (threshold "+str(threshold)+"):", unsafe_allow_html=True)
+        if outliers.shape[0]>0:
+            st.write(outliers[tested].tolist())
+        else:
+            st.markdown("No outliers detected !", unsafe_allow_html=True)
         
+        st.markdown("---")
+        st.markdown("<b>Homogeneity tests</b>", unsafe_allow_html=True)
+        st.markdown("<ul>", unsafe_allow_html=True)
+
+        st.markdown("<li>Anova test</li>", unsafe_allow_html=True)
+        for var in selected_vars:
+            data[var] = data[var].astype('category')
+            # Perform ANOVA test
+            groups = [data[tested][data[var] == level] for level in data[var].unique()]
+            anova_result = f_oneway(*groups)
+            st.markdown("by "+var+":", unsafe_allow_html=True)
+            st.write(anova_result)
+            
+        
+        st.markdown("<li>Levene test</li>", unsafe_allow_html=True)
+        for var in selected_vars:
+            data[var] = data[var].astype('category')
+            # Perform Levene test
+            groups = [data[tested][data[var] == level] for level in data[var].unique()]
+            levene_result = levene(*groups)
+            st.markdown("by "+var+":", unsafe_allow_html=True)
+            st.write(levene_result)
+
+        st.markdown("<li>Bartlett test</li>", unsafe_allow_html=True)
+        for var in selected_vars:
+            data[var] = data[var].astype('category')
+            # Perform Bartlett test
+            groups = [data[tested][data[var] == level] for level in data[var].unique()]
+            levene_result = bartlett(*groups)
+            st.markdown("by "+var+":", unsafe_allow_html=True)
+            st.write(levene_result)
+        
+        st.markdown("</ul>", unsafe_allow_html=True)
         
 
 if __name__ == "__main__":
