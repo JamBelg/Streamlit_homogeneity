@@ -87,7 +87,13 @@ def main():
     
     st.markdown("---")
 
+
     if tested!='' and len(selected_vars)>0:
+        
+        list_columns = selected_vars
+        list_columns.append(tested)
+        st.markdown(list_columns, unsafe_allow_html=True)
+        st.markdown('---')
         
         # Outliers
         st.markdown("<b>Outliers</b>", unsafe_allow_html=True)
@@ -107,7 +113,7 @@ def main():
                 else:
                     outliers_iqr = outliers_i
         if outliers_iqr.shape[1]>0:
-            outliers_iqr = outliers_iqr[selected_vars.tolist().append(tested)]
+            outliers_iqr = outliers_iqr[list_columns]
             st.markdown(outliers_iqr.style.hide(axis="index").to_html(), 
                         unsafe_allow_html=True)
         else:
