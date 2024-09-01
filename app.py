@@ -90,10 +90,8 @@ def main():
 
     if tested!='' and len(selected_vars)>0:
         
-        list_columns = selected_vars
+        list_columns = selected_vars.copy()
         list_columns.append(tested)
-        st.markdown(list_columns, unsafe_allow_html=True)
-        st.markdown('---')
         
         # Outliers
         st.markdown("<b>Outliers</b>", unsafe_allow_html=True)
@@ -113,8 +111,7 @@ def main():
                 else:
                     outliers_iqr = outliers_i
         if outliers_iqr.shape[1]>0:
-            outliers_iqr = outliers_iqr[list_columns]
-            st.markdown(outliers_iqr.style.hide(axis="index").to_html(), 
+            st.markdown(outliers_iqr[list_columns].style.hide(axis="index").to_html(), 
                         unsafe_allow_html=True)
         else:
             st.markdown("No outliers detected !", unsafe_allow_html=True)
@@ -131,10 +128,8 @@ def main():
  
         # Print the outliers
         if outliers_zscore.shape[0]>0:
-            st.markdown(outliers_zscore.style.hide(axis="index").to_html(), 
+            st.markdown(outliers_zscore[list_columns].style.hide(axis="index").to_html(), 
                         unsafe_allow_html=True)
-            #st.table(outliers_zscore)
-            #st.write(outliers[tested].tolist())
         else:
             st.markdown("No outliers detected !", unsafe_allow_html=True)
         
@@ -149,11 +144,35 @@ def main():
             else:
                 outliers_isolForest = pd.concat([outliers_isolForest, outliers_i]).drop_duplicates()
         if(outliers_isolForest.shape[1]>0):
-            st.markdown(outliers_isolForest.style.hide(axis="index").to_html(), 
+            st.markdown(outliers_isolForest[list_columns].style.hide(axis="index").to_html(), 
                         unsafe_allow_html=True)
             #st.table(outliers_isolForest)
         else:
             st.write('No outliers')
+        
+        # Add a column to each DataFrame to indicate that the outlier was detected by the respective method
+        outliers_zscore['Z-score'] = 'x'
+        outliers_isolForest['IsolationForest'] = 'x'
+        outliers_iqr['IQR method'] = 'x'
+
+
+        # Merge the dataframes on columns 'X', 'Y', and 'Z'
+        merged_df = pd.merge(outliers_zscore[['X', 'Y', 'Z', 'Z-score']], 
+                            outliers_isolForest[['X', 'Y', 'Z', 'IsolationForest']], 
+                            on=['X', 'Y', 'Z'], 
+                            how='outer')
+
+        merged_df = pd.merge(merged_df, 
+                            outliers_iqr[['X', 'Y', 'Z', 'IQR method']], 
+                            on=['X', 'Y', 'Z'], 
+                            how='outer')
+
+        # Fill NaN values with an empty string (because not all methods will detect an outlier for each row)
+        merged_df.fillna('', inplace=True)
+        merged_df = merged_df.drop_duplicates(subset=['X', 'Y', 'Z'])
+        if merged_df.shape[1]>0:
+            st.markdown(merged_df.style.hide(axis="index").to_html(), 
+                        unsafe_allow_html=True)
         
         if st.checkbox('Delete outliers'):
             outliers = pd.concat([outliers_zscore, outliers_isolForest, outliers_iqr]).drop_duplicates()
@@ -164,24 +183,27 @@ def main():
         
         # Plots
         st.markdown("<b>Vizualisation</b>", unsafe_allow_html=True)
-        for var in selected_vars:
-            fig = px.box(data,
-                        x=var,
-                        y=tested,
-                        color=var,
-                        title='Boxplot '+tested+' vs '+var)
+        modified_list = [f'Boxplot of {item}' for item in selected_vars]
+        tabs = st.tabs(modified_list)
+        for i, tab in enumerate(tabs):
+            with tab:
+                fig = px.box(data,
+                            x=selected_vars[i],
+                            y=tested,
+                            color=selected_vars[i],
+                            title='Boxplot '+tested+' vs '+selected_vars[i])
 
-            # Update layout (optional)
-            fig.update_layout(
-                yaxis_title=tested,
-                xaxis_title=var,
-                showlegend=False
-            )
+                # Update layout (optional)
+                fig.update_layout(
+                    yaxis_title=tested,
+                    xaxis_title=selected_vars[i],
+                    showlegend=False
+                )
 
-            # Display the boxplot in Streamlit
-            st.plotly_chart(fig,
-                            theme = "streamlit",
-                            use_container_width = True)
+                # Display the boxplot in Streamlit
+                st.plotly_chart(fig,
+                                theme = "streamlit",
+                                use_container_width = True)
         
         st.markdown("---")
         
@@ -190,18 +212,33 @@ def main():
         st.markdown("<ul>", unsafe_allow_html=True)
 
         st.markdown("<li>Anova test</li>", unsafe_allow_html=True)
+        tab1, tab2 = st.tabs(["Resume", "Details"])
+        anova_results=[]
+        anova_resume=[]
         for var in selected_vars:
             data[var] = data[var].astype('category')
             # Perform ANOVA test
             groups = [data[tested][data[var] == level] for level in data[var].unique()]
-            anova_result = f_oneway(*groups)
-            st.markdown("by "+var+":", unsafe_allow_html=True)
-            st.write(anova_result)
-            if anova_result.pvalue>=0.05:
-                st.markdown("p-value ≥ 0.05: Fail to reject the null hypothesis. The groups are homogeneous.", unsafe_allow_html=True)
+            anova_result_i = f_oneway(*groups)
+            anova_results.append(anova_result_i)
+            if anova_result_i.pvalue>=0.05:
+                anova_resume.append('Homogeneous')
             else:
-                st.markdown("p-value < 0.05: Reject the null hypothesis. The groups are not homogeneous.", unsafe_allow_html=True)
-            
+                anova_resume.append('Not homogeneous')
+        with tab1:
+            anova_table = pd.DataFrame({'Variable':selected_vars,
+                                        'Results': anova_resume})
+            #st.table(anova_table)
+            st.markdown(anova_table.style.hide(axis="index").to_html(), 
+                        unsafe_allow_html=True)
+            #st.markdown("by "+var+":", unsafe_allow_html=True)
+            #st.write(anova_result)
+            #if anova_result.pvalue>=0.05:
+            #    st.markdown("p-value ≥ 0.05: Fail to reject the null hypothesis. The groups are homogeneous.", unsafe_allow_html=True)
+            #else:
+            #    st.markdown("p-value < 0.05: Reject the null hypothesis. The groups are not homogeneous.", unsafe_allow_html=True)
+        with tab2:
+            st.write(anova_results)
         
         st.markdown("<li>Levene test</li>", unsafe_allow_html=True)
         for var in selected_vars:
