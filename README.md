@@ -1,3 +1,6 @@
 # Streamlit_homogeneity
 Testing homogeneity using Anova test
-[![Watch the video](https://github.com/JamBelg/Streamlit_homogeneity/blob/main/thumbnail.png)](https://github.com/JamBelg/Streamlit_homogeneity/raw/main/path/to/your/Screen Recording 2024-09-03 at 06.41.46.mov)
+
+This application provides a tool for testing homogeneity of data across multiple variables using ANOVA, Levene, and Bartlett tests.\
+It allows users to upload a CSV file or use sample data to analyze the homogeneity and identify outliers using various methods like Z-score, IQR, and Isolation Forest.\
+The tool offers interactive visualizations, including boxplots, Z-score plots, and Q-Q plots, to help users understand the data distribution and variance. Additionally, users can easily remove detected outliers and explore detailed test results to assess group uniformity.
