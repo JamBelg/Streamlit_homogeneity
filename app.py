@@ -48,7 +48,7 @@ def main():
         if uploaded_file is None:
             data = pd.read_csv("data_example.csv", sep=';')
         else:
-            data = pd.read_csv(uploaded_file)
+            data = pd.read_csv(uploaded_file, sep=';')
     
         float_columns = data.select_dtypes(include=['float']).columns  # Select only float columns
         columns_to_round = [col for col in float_columns if col not in ['X', 'Y', 'Z']]  # Exclude 'X', 'Y', 'Z'
