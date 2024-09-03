@@ -9,7 +9,7 @@ The tool offers interactive visualizations, including boxplots, Z-score plots, a
 <p align="center"><img src="Screenshot 2024-09-03 at 06.52.16.png" width="300"></p>
 
  - Vizualisation:
-<p align="center"><img src="Screenshot 2024-09-03 at 06.52.37.png" width="300"></p>
+<p align="center"><img src="Screenshot 2024-09-03 at 06.52.37.png" width="500"></p>
 
  - Homogeneity testing:
-<p align="center"><img src="Screenshot 2024-09-03 at 06.52.46.png" width="300"></p>
+<p align="center"><img src="Screenshot 2024-09-03 at 06.52.46.png" width="500"></p>
