@@ -36,7 +36,7 @@ def main():
         st.title("Homogeneity testing")
         st.markdown(
             """
-            This application is using Anova test to check the homogeneity of data along multiple axes (x, y, z)
+            This application is using different tests to check the homogeneity of data along multiple axes (x, y, z)
             """,
             unsafe_allow_html=True
         )
@@ -167,6 +167,8 @@ def main():
         merged_df.fillna('', inplace=True)
         merged_df = merged_df.drop_duplicates(subset=list_columns)
         merged_df[tested] = merged_df[tested].round(2)
+        
+        st.markdown("<b>Outliers detection</b>", unsafe_allow_html=True)
         
         if merged_df.shape[1]>0:
             # Format the 'tested' column to two decimal places using the Styler object
