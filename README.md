@@ -6,10 +6,10 @@ It allows users to upload a CSV file or use sample data to analyze the homogenei
 The tool offers interactive visualizations, including boxplots, Z-score plots, and Q-Q plots, to help users understand the data distribution and variance. Additionally, users can easily remove detected outliers and explore detailed test results to assess group uniformity.
 
  - Outliers detection:
-<p align="center"><img src="Screenshot 2024-09-03 at 06.52.16.png"></p>
+<p align="center"><img src="Screenshot 2024-09-03 at 06.52.16.png" width="300"></p>
 
  - Vizualisation:
-<p align="center"><img src="Screenshot 2024-09-03 at 06.52.37.png"></p>
+<p align="center"><img src="Screenshot 2024-09-03 at 06.52.37.png" width="300"></p>
 
  - Homogeneity testing:
-<p align="center"><img src="Screenshot 2024-09-03 at 06.52.46.png"></p>
+<p align="center"><img src="Screenshot 2024-09-03 at 06.52.46.png" width="300"></p>
