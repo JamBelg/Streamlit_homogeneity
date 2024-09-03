@@ -12,4 +12,4 @@ The tool offers interactive visualizations, including boxplots, Z-score plots, a
 <p align="center"><img src="Screenshot 2024-09-03 at 06.52.37.png"></p>
 
  - Homogeneity testing:
-<p align="center"><img src="train_threadid_plot.png"></p>
+<p align="center"><img src="Screenshot 2024-09-03 at 06.52.46.png"></p>
