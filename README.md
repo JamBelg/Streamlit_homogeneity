@@ -13,3 +13,9 @@ The tool offers interactive visualizations, including boxplots, Z-score plots, a
 
  - Homogeneity testing:
 <p align="center"><img src="Screenshot 2024-09-03 at 06.52.46.png" width="500"></p>
+
+<div style="text-align: center;">
+  <img src="Screenshot 2024-09-03 at 06.52.16.png" alt="Image 1" style="width: 200px; display: inline-block; margin: 0 10px;">
+  <img src="Screenshot 2024-09-03 at 06.52.37.png" alt="Image 2" style="width: 200px; display: inline-block; margin: 0 10px;">
+  <img src="Screenshot 2024-09-03 at 06.52.46.png" alt="Image 3" style="width: 200px; display: inline-block; margin: 0 10px;">
+</div>
