@@ -16,6 +16,6 @@ The tool offers interactive visualizations, including boxplots, Z-score plots, a
 
 <div style="text-align: center;">
   <img src="Screenshot 2024-09-03 at 06.52.16.png" alt="Outliers" style="width: 300px; display: inline-block; margin: 0 10px;">
-  <img src="Screenshot 2024-09-03 at 06.52.37.png" alt="Plots" style="width: 300px; display: inline-block; margin: 0 10px;">
-  <img src="Screenshot 2024-09-03 at 06.52.46.png" alt="Homogeneity" style="width: 300px; display: inline-block; margin: 0 10px;">
+  <img src="Screenshot 2024-09-03 at 06.52.37.png" alt="Plots" style="width: 600px; display: inline-block; margin: 0 10px;">
+  <img src="Screenshot 2024-09-03 at 06.52.46.png" alt="Homogeneity" style="width: 700px; display: inline-block; margin: 0 10px;">
 </div>
