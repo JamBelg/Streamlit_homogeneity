@@ -26,12 +26,13 @@ This application offers a comprehensive solution for analyzing data homogeneity 
 
 **Getting Started**
 Install the necessary libraries:
-    streamlit
-    pandas
-    numpy
-    scipy
-    sklearn
-    plotly
+
+ - streamlit
+ - pandas
+ - numpy
+ - scipy
+ - sklearn
+ - plotly
 
 **Run the application:**
 ```
