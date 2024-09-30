@@ -1,7 +1,7 @@
-# Streamlit_homogeneity
+# Streamlit_homogeneity [![Link of the application](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://homogeneity.streamlit.app/)
 ## A Streamlit-based application for testing homogeneity across multiple variables using statistical methods.
 
-[![Link of the application](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://homogeneity.streamlit.app/)
+
 
 This application offers a comprehensive solution for analyzing data homogeneity across multiple variables through ANOVA, Levene, and Bartlett tests. Users can upload a CSV file or use the provided sample dataset to examine data uniformity and identify outliers using advanced techniques such as Z-score, IQR (Interquartile Range), and Isolation Forest.
 
